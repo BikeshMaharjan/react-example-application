@@ -1,4 +1,4 @@
-import "./Search.css";
+import "./index.css";
 
 const Search = ({ value, onChange, onSubmit, children }) => (
   <form className="search-bar" onSubmit={onSubmit}>

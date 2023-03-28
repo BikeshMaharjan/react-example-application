@@ -1,7 +1,7 @@
-import Button from "./Button";
+import Button from "../Button";
 
-const isSearched = (searchTerm) => (item) =>
-  !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
+// const isSearched = (searchTerm) => (item) =>
+//   !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
 const largeColumn = { width: "40%" };
 const midColumn = { width: "30%" };
