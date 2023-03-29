@@ -1,3 +1,4 @@
+import PropType from "prop-types";
 import "./index.css";
 
 const Search = ({ value, onChange, onSubmit, children }) => (
@@ -9,5 +10,12 @@ const Search = ({ value, onChange, onSubmit, children }) => (
     </button>
   </form>
 );
+
+Search.propTypes = {
+  value: PropType.string.isRequired,
+  onChange: PropType.func.isRequired,
+  onSubmit: PropType.func.isRequired,
+  children: PropType.node,
+};
 
 export default Search;
