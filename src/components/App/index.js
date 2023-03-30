@@ -2,6 +2,7 @@ import "./index.css";
 import React, { useEffect, useState } from "react";
 import Search from "../Search";
 import Table from "../Table";
+import Button from "../Button";
 import {
   DEFAULT_QUERY,
   DEFAULT_PAGE,
@@ -82,5 +83,7 @@ function App() {
     </div>
   );
 }
+
+export { Search, Table, Button };
 
 export default App;
