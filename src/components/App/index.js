@@ -13,6 +13,7 @@ import {
   PARAM_PAGE,
   PARAM_HPP,
 } from "../../constants";
+import Loading from "../Loading";
 
 function App() {
   const [results, setResults] = useState(null);
@@ -20,6 +21,7 @@ function App() {
   const [page, setPage] = useState(
     (results && results[searchTerm] && results[searchTerm].page) || 0
   );
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchData(DEFAULT_PAGE);
@@ -35,8 +37,10 @@ function App() {
     const updatedHits = [...oldHits, ...hits];
     setResults({ ...results, [searchTerm]: { hits: updatedHits, page } });
     setPage(page);
+    setLoading(false);
   };
   const fetchData = async (page) => {
+    setLoading(true);
     return await fetch(
       `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFULT_HPP}`
     )
@@ -76,7 +80,11 @@ function App() {
         <>
           <Table list={list} onDismiss={onDismiss} />
           <div className="interactions">
-            <button onClick={() => fetchData(page + 1)}>More</button>
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <button onClick={() => fetchData(page + 1)}>More</button>
+            )}
           </div>
         </>
       )}
