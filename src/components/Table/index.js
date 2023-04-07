@@ -9,11 +9,17 @@ const largeColumn = { width: "40%" };
 const midColumn = { width: "30%" };
 const smallColumn = { width: "10%" };
 
-const Sort = ({ sortKey, onSort, children }) => (
-  <Button onClick={() => onSort(sortKey)} className="button-inline">
-    {children}
-  </Button>
-);
+const Sort = ({ sortKey, onSort, children, activeSortKey }) => {
+  const sortClass = ["button-inline"];
+  if (sortKey === activeSortKey) {
+    sortClass.push("button-active");
+  }
+  return (
+    <Button onClick={() => onSort(sortKey)} className={sortClass.join(" ")}>
+      {children}
+    </Button>
+  );
+};
 
 const Table = ({ list, onDismiss, sortKey, onSort, isSortReverse }) => {
   const sortedList = SORTS[sortKey](list);
@@ -22,22 +28,22 @@ const Table = ({ list, onDismiss, sortKey, onSort, isSortReverse }) => {
     <div className="table">
       <div className="table-header">
         <span style={{ width: "40%" }}>
-          <Sort sortKey="TITLE" onSort={onSort}>
+          <Sort sortKey="TITLE" onSort={onSort} activeSortKey={sortKey}>
             Title
           </Sort>
         </span>
         <span style={{ width: "30%" }}>
-          <Sort sortKey="AUTHOR" onSort={onSort}>
+          <Sort sortKey="AUTHOR" onSort={onSort} activeSortKey={sortKey}>
             Author
           </Sort>
         </span>
         <span style={{ width: "10%" }}>
-          <Sort sortKey={"COMMENTS"} onSort={onSort}>
+          <Sort sortKey={"COMMENTS"} onSort={onSort} activeSortKey={sortKey}>
             Comments
           </Sort>
         </span>
         <span style={{ width: "10%" }}>
-          <Sort sortKey={"POINTS"} onSort={onSort}>
+          <Sort sortKey={"POINTS"} onSort={onSort} activeSortKey={sortKey}>
             Points
           </Sort>
         </span>
