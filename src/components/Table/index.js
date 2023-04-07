@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import Button from "../Button";
+import { SORTS } from "../App";
 
 // const isSearched = (searchTerm) => (item) =>
 //   !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -8,10 +9,37 @@ const largeColumn = { width: "40%" };
 const midColumn = { width: "30%" };
 const smallColumn = { width: "10%" };
 
-const Table = ({ list, onDismiss }) => {
+const Sort = ({ sortKey, onSort, children }) => (
+  <Button onClick={() => onSort(sortKey)}>{children}</Button>
+);
+
+const Table = ({ list, onDismiss, sortKey, onSort }) => {
   return (
     <div className="table">
-      {list.map((item) => (
+      <div className="table-header">
+        <span style={{ width: "40%" }}>
+          <Sort sortKey="TITLE" onSort={onSort}>
+            Title
+          </Sort>
+        </span>
+        <span style={{ width: "30%" }}>
+          <Sort sortKey="AUTHOR" onSort={onSort}>
+            Author
+          </Sort>
+        </span>
+        <span style={{ width: "10%" }}>
+          <Sort sortKey={"COMMENTS"} onSort={onSort}>
+            Comments
+          </Sort>
+        </span>
+        <span style={{ width: "10%" }}>
+          <Sort sortKey={"POINTS"} onSort={onSort}>
+            Points
+          </Sort>
+        </span>
+        <span style={{ width: "10%" }}>Archive</span>
+      </div>
+      {SORTS[sortKey](list).map((item) => (
         <div key={item.objectID} className="table-row">
           {" "}
           <span style={largeColumn}>

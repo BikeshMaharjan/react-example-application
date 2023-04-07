@@ -1,5 +1,6 @@
 import "./index.css";
 import React, { useEffect, useState } from "react";
+import { sortBy } from "lodash";
 import Search from "../Search";
 import Table from "../Table";
 import Button from "../Button";
@@ -13,7 +14,15 @@ import {
   PARAM_PAGE,
   PARAM_HPP,
 } from "../../constants";
-import Loading from "../Loading";
+import withLoading from "../HOC";
+
+const SORTS = {
+  NONE: (list) => list,
+  TITLE: (list) => sortBy(list, "title"),
+  AUTHOR: (list) => sortBy(list, "author"),
+  COMMENTS: (list) => sortBy(list, "num_comments").reverse(),
+  POINTS: (list) => sortBy(list, "points").reverse(),
+};
 
 function App() {
   const [results, setResults] = useState(null);
@@ -22,6 +31,7 @@ function App() {
     (results && results[searchTerm] && results[searchTerm].page) || 0
   );
   const [isLoading, setLoading] = useState(false);
+  const [sortKey, setSortKey] = useState("NONE");
 
   useEffect(() => {
     fetchData(DEFAULT_PAGE);
@@ -67,6 +77,10 @@ function App() {
     event.preventDefault();
   };
 
+  const onSort = (sortKey) => setSortKey(sortKey);
+
+  const ButtonWithLoading = withLoading(Button);
+
   return (
     <div className="page">
       <div className="interactions">
@@ -78,13 +92,19 @@ function App() {
       </div>
       {results && (
         <>
-          <Table list={list} onDismiss={onDismiss} />
+          <Table
+            list={list}
+            sortKey={sortKey}
+            onSort={onSort}
+            onDismiss={onDismiss}
+          />
           <div className="interactions">
-            {isLoading ? (
-              <Loading />
-            ) : (
-              <button onClick={() => fetchData(page + 1)}>More</button>
-            )}
+            <ButtonWithLoading
+              isLoading={isLoading}
+              onClick={() => fetchData(page + 1)}
+            >
+              More
+            </ButtonWithLoading>
           </div>
         </>
       )}
@@ -92,6 +112,6 @@ function App() {
   );
 }
 
-export { Search, Table, Button };
+export { Search, Table, Button, SORTS };
 
 export default App;
