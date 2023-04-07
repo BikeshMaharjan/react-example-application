@@ -10,10 +10,14 @@ const midColumn = { width: "30%" };
 const smallColumn = { width: "10%" };
 
 const Sort = ({ sortKey, onSort, children }) => (
-  <Button onClick={() => onSort(sortKey)}>{children}</Button>
+  <Button onClick={() => onSort(sortKey)} className="button-inline">
+    {children}
+  </Button>
 );
 
-const Table = ({ list, onDismiss, sortKey, onSort }) => {
+const Table = ({ list, onDismiss, sortKey, onSort, isSortReverse }) => {
+  const sortedList = SORTS[sortKey](list);
+  const reverseSortedList = isSortReverse ? sortedList.reverse() : sortedList;
   return (
     <div className="table">
       <div className="table-header">
@@ -39,7 +43,7 @@ const Table = ({ list, onDismiss, sortKey, onSort }) => {
         </span>
         <span style={{ width: "10%" }}>Archive</span>
       </div>
-      {SORTS[sortKey](list).map((item) => (
+      {reverseSortedList.map((item) => (
         <div key={item.objectID} className="table-row">
           {" "}
           <span style={largeColumn}>

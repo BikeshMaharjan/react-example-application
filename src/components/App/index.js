@@ -32,6 +32,7 @@ function App() {
   );
   const [isLoading, setLoading] = useState(false);
   const [sortKey, setSortKey] = useState("NONE");
+  const [isSortReverse, setSortReverse] = useState(false);
 
   useEffect(() => {
     fetchData(DEFAULT_PAGE);
@@ -77,7 +78,11 @@ function App() {
     event.preventDefault();
   };
 
-  const onSort = (sortKey) => setSortKey(sortKey);
+  const onSort = (key) => {
+    const isSortReversed = sortKey === key && !isSortReverse;
+    setSortKey(key);
+    setSortReverse(isSortReversed);
+  };
 
   const ButtonWithLoading = withLoading(Button);
 
@@ -96,6 +101,7 @@ function App() {
             list={list}
             sortKey={sortKey}
             onSort={onSort}
+            isSortReverse={isSortReverse}
             onDismiss={onDismiss}
           />
           <div className="interactions">
