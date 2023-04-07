@@ -1,6 +1,5 @@
 import "./index.css";
 import React, { useEffect, useState } from "react";
-import { sortBy } from "lodash";
 import Search from "../Search";
 import Table from "../Table";
 import Button from "../Button";
@@ -16,14 +15,6 @@ import {
 } from "../../constants";
 import withLoading from "../HOC";
 
-const SORTS = {
-  NONE: (list) => list,
-  TITLE: (list) => sortBy(list, "title"),
-  AUTHOR: (list) => sortBy(list, "author"),
-  COMMENTS: (list) => sortBy(list, "num_comments").reverse(),
-  POINTS: (list) => sortBy(list, "points").reverse(),
-};
-
 function App() {
   const [results, setResults] = useState(null);
   const [searchTerm, setSearchTerm] = useState(DEFAULT_QUERY);
@@ -31,8 +22,6 @@ function App() {
     (results && results[searchTerm] && results[searchTerm].page) || 0
   );
   const [isLoading, setLoading] = useState(false);
-  const [sortKey, setSortKey] = useState("NONE");
-  const [isSortReverse, setSortReverse] = useState(false);
 
   useEffect(() => {
     fetchData(DEFAULT_PAGE);
@@ -78,12 +67,6 @@ function App() {
     event.preventDefault();
   };
 
-  const onSort = (key) => {
-    const isSortReversed = sortKey === key && !isSortReverse;
-    setSortKey(key);
-    setSortReverse(isSortReversed);
-  };
-
   const ButtonWithLoading = withLoading(Button);
 
   return (
@@ -97,13 +80,7 @@ function App() {
       </div>
       {results && (
         <>
-          <Table
-            list={list}
-            sortKey={sortKey}
-            onSort={onSort}
-            isSortReverse={isSortReverse}
-            onDismiss={onDismiss}
-          />
+          <Table list={list} onDismiss={onDismiss} />
           <div className="interactions">
             <ButtonWithLoading
               isLoading={isLoading}
@@ -118,6 +95,6 @@ function App() {
   );
 }
 
-export { Search, Table, Button, SORTS };
+export { Search, Table, Button };
 
 export default App;

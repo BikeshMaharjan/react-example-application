@@ -1,10 +1,20 @@
+import React from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+import { sortBy } from "lodash";
 import Button from "../Button";
-import { SORTS } from "../App";
 
 // const isSearched = (searchTerm) => (item) =>
 //   !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
+
+const SORTS = {
+  NONE: (list) => list,
+  TITLE: (list) => sortBy(list, "title"),
+  AUTHOR: (list) => sortBy(list, "author"),
+  COMMENTS: (list) => sortBy(list, "num_comments").reverse(),
+  POINTS: (list) => sortBy(list, "points").reverse(),
+};
 
 const largeColumn = { width: "40%" };
 const midColumn = { width: "30%" };
@@ -21,9 +31,19 @@ const Sort = ({ sortKey, onSort, children, activeSortKey }) => {
   );
 };
 
-const Table = ({ list, onDismiss, sortKey, onSort, isSortReverse }) => {
+const Table = ({ list, onDismiss }) => {
+  const [sortKey, setSortKey] = useState("NONE");
+  const [isSortReverse, setSortReverse] = useState(false);
+
   const sortedList = SORTS[sortKey](list);
   const reverseSortedList = isSortReverse ? sortedList.reverse() : sortedList;
+
+  const onSort = (key) => {
+    const isSortReversed = sortKey === key && !isSortReverse;
+    setSortKey(key);
+    setSortReverse(isSortReversed);
+  };
+
   return (
     <div className="table">
       <div className="table-header">
