@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import Button from "../Button";
 import { SORTS } from "../App";
 
@@ -10,12 +11,11 @@ const midColumn = { width: "30%" };
 const smallColumn = { width: "10%" };
 
 const Sort = ({ sortKey, onSort, children, activeSortKey }) => {
-  const sortClass = ["button-inline"];
-  if (sortKey === activeSortKey) {
-    sortClass.push("button-active");
-  }
+  const sortClass = classNames("button-inline", {
+    "button-active": sortKey === activeSortKey,
+  });
   return (
-    <Button onClick={() => onSort(sortKey)} className={sortClass.join(" ")}>
+    <Button onClick={() => onSort(sortKey)} className={sortClass}>
       {children}
     </Button>
   );
